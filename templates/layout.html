@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Under 1000 – Nairobi Town Finds</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+<nav>
+  <a href="/" class="logo-link">
+    <div class="logo-note">{{ note_svg|safe }}</div>
+    <div class="logo-text"><span class="logo-under">under</span><span class="logo-1000">1000/=</span></div>
+  </a>
+  <div class="nav-r">
+    {% if session.get('admin') %}
+      <span class="user-chip">{{ icon(admins[session['admin']]['icon'], 14)|safe }} {{ admins[session['admin']]['role'] }}</span>
+      <a href="/admin" class="nb ghost">{{ icon('grid', 14)|safe }} <span>Dashboard</span></a>
+      <a href="/logout" class="nb gold">{{ icon('log-out', 14)|safe }} <span>Log out</span></a>
+    {% elif session.get('buyer') %}
+      <span class="user-chip">{{ icon('user', 14)|safe }} {{ session['buyer'] }}</span>
+      <a href="/sell" class="nb ghost">{{ icon('plus', 14)|safe }} <span>Sell</span></a>
+      <a href="/logout" class="nb solid">{{ icon('log-out', 14)|safe }} <span>Log out</span></a>
+    {% else %}
+      <a href="/login" class="nb ghost">{{ icon('user', 14)|safe }} <span>Log in</span></a>
+      <a href="/register" class="nb solid">{{ icon('plus', 14)|safe }} <span>Register</span></a>
+      <a href="/admin/login" class="nb gold">{{ icon('settings', 14)|safe }} <span>Admin</span></a>
+    {% endif %}
+  </div>
+</nav>
+
+{% block content %}{% endblock %}
+
+<footer>
+    {{ icon('map-pin', 13)|safe }} Nairobi Town only &nbsp;·&nbsp; All under Ksh 1,000 &nbsp;·&nbsp; © 2025 Under 1000/=
+</footer>
+
+{% block scripts %}{% endblock %}
+</body>
+</html>

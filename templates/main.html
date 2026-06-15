@@ -1,0 +1,276 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="main-container">
+  {% if view == 'shop' %}
+    <div class="hero">
+      <div class="hero-chip">{{ icon('map-pin', 11)|safe }} Nairobi Town Only</div>
+      <h1>Fits &amp; Finds<br><em>Under 1000/=</em></h1>
+      <p>Real clothes &amp; accessories from Nairobi town sellers — all under Ksh 1,000</p>
+    </div>
+
+    <div class="fbar">
+        <span class="flabel">{{ icon('filter', 11)|safe }} Price</span>
+        <button onclick="filterProducts(0, 1001, this)" class="fp on">All</button>
+        {% for lo, hi in price_ranges %}
+            <button onclick="filterProducts({{ lo }}, {{ hi }}, this)" class="fp">{{ lo }}–{{ hi }}</button>
+        {% endfor %}
+    </div>
+
+    <div class="gwrap">
+      <div class="sec-hd">
+        <span class="sec-title" id="range-label">All Items</span>
+        <span class="cnt" id="item-count">{{ products|length }} items</span>
+      </div>
+
+      {% if products %}
+        <div class="grid" id="product-grid">
+          {% for p in products %}
+            <div class="card" data-price="{{ p.price }}">
+              <div class="cimg">
+                <img src="{{ p.image_url or 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600' }}" alt="{{ p.name }}" loading="lazy">
+                <div class="ptag">{{ icon('tag', 12)|safe }} Ksh {{ p.price }}</div>
+                <div class="ctag">{{ p.category }}</div>
+              </div>
+              <div class="cbody">
+                <div class="cname">{{ p.name }}</div>
+                <div class="cmeta">{{ icon('map-pin', 11)|safe }} {{ p.location }}</div>
+                <div class="cmeta">{{ icon('store', 11)|safe }} {{ p.seller }}</div>
+                <div class="cacts">
+                  <a class="bwa" href="https://wa.me/{{ p.whatsapp }}?text=Hi!+I+saw+{{ p.name }}+on+Under1000+for+Ksh+{{ p.price }}+–+is+it+available?" target="_blank">{{ icon('whatsapp', 15)|safe }} WhatsApp</a>
+                  {% if p.instagram %}
+                    <a class="bsm" href="https://instagram.com/{{ p.instagram }}" target="_blank">{{ icon('instagram', 14)|safe }}</a>
+                  {% endif %}
+                  {% if p.tiktok %}
+                    <a class="bsm" href="https://tiktok.com/@{{ p.tiktok }}" target="_blank">{{ icon('tiktok', 14)|safe }}</a>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty">
+          <div class="empty-ic">{{ icon('filter', 48)|safe }}</div>
+          <p>No items in this price range yet.</p>
+        </div>
+      {% endif %}
+    </div>
+
+  {% elif view == 'auth' %}
+    <div class="auth-pg">
+      <div class="auth-card">
+        <div class="auth-logo">
+          <div class="nw">{{ note_svg|safe }}</div>
+          <div style="font-size:.52rem;font-weight:700;color:var(--muted);letter-spacing:.2em;text-transform:uppercase;margin-top:.3rem">under</div>
+          <div style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:900">1000/=</div>
+        </div>
+        <div class="auth-title">{{ auth_title }}</div>
+        <div class="auth-sub">{{ auth_subtitle }}</div>
+        
+        {% if flash_err %}
+          <div class="ferr">{{ icon('x', 15)|safe }} {{ flash_err }}</div>
+        {% endif %}
+        {% if flash_ok %}
+          <div class="fok">{{ icon('check', 15)|safe }} {{ flash_ok }}</div>
+        {% endif %}
+
+        <form method="POST">
+          {% if mode == 'register' %}
+            <div class="fg">
+              <label class="fl">{{ icon('user', 12)|safe }} Username</label>
+              <input class="fi" name="username" placeholder="choose a username" required>
+            </div>
+            <div class="fg">
+              <label class="fl">{{ icon('mail', 12)|safe }} Email</label>
+              <input class="fi" type="email" name="email" placeholder="you@email.com" required>
+            </div>
+            <div class="fg">
+              <label class="fl">{{ icon('lock', 12)|safe }} Password</label>
+              <input class="fi" type="password" name="password" placeholder="at least 6 characters" minlength="6" required>
+            </div>
+          {% elif mode == 'login' %}
+            <div class="fg">
+              <label class="fl">{{ icon('user', 12)|safe }} Username</label>
+              <input class="fi" name="username" placeholder="your username" required>
+            </div>
+            <div class="fg">
+              <label class="fl">{{ icon('lock', 12)|safe }} Password</label>
+              <input class="fi" type="password" name="password" placeholder="••••••••" required>
+            </div>
+          {% elif mode == 'admin_login' %}
+            <div class="fg">
+              <label class="fl">{{ icon('user', 12)|safe }} Admin Username</label>
+              <input class="fi" name="username" placeholder="admin username" required>
+            </div>
+            <div class="fg">
+              <label class="fl">{{ icon('lock', 12)|safe }} Password</label>
+              <input class="fi" type="password" name="password" placeholder="••••••••" required>
+            </div>
+          {% endif %}
+
+          <button class="abtn {{ btn_cls }}" type="submit">{{ icon(btn_icon, 16)|safe }} {{ btn_text }}</button>
+        </form>
+
+        <div class="alink">
+          {% if mode == 'register' %}
+            Already have an account? <a href="/login">Log in</a>
+          {% elif mode == 'login' %}
+            No account? <a href="/register">Register here</a>
+            <div style="margin-top:.4rem"><a href="/admin/login">Admin login →</a></div>
+          {% elif mode == 'admin_login' %}
+            <a href="/login">← Buyer login</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+  {% elif view == 'sell' %}
+    <div class="spg">
+      <div class="ptitle">List Your Item</div>
+      <div class="psub">{{ icon('bell', 14)|safe }} Listing goes live after admin approval</div>
+      
+      {% if flash_err %}
+        <div class="ferr" style="margin-bottom:1rem">{{ icon('x', 15)|safe }} {{ flash_err }}</div>
+      {% endif %}
+      {% if flash_ok %}
+        <div class="fok" style="margin-bottom:1rem">{{ icon('check', 15)|safe }} {{ flash_ok }}</div>
+      {% endif %}
+
+      <div class="sform">
+        <form method="POST">
+          <div class="frow">
+            <div class="fg">
+              <label class="fl">{{ icon('tag', 12)|safe }} Product Name *</label>
+              <input class="fi" name="name" placeholder="e.g. Vintage Jacket" required>
+            </div>
+            <div class="fg">
+              <label class="fl">{{ icon('tag', 12)|safe }} Price — max Ksh 1000 *</label>
+              <input class="fi" type="number" name="price" min="10" max="1000" placeholder="e.g. 450" required>
+            </div>
+          </div>
+          <div class="frow">
+            <div class="fg">
+              <label class="fl">{{ icon('store', 12)|safe }} Shop / Your Name *</label>
+              <input class="fi" name="seller" placeholder="e.g. Wanjiku Styles" required>
+            </div>
+            <div class="fg">
+              <label class="fl">{{ icon('filter', 12)|safe }} Category</label>
+              <select class="fi" name="category">
+                {% for c in categories %}
+                  <option>{{ c }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="fg">
+            <label class="fl">{{ icon('whatsapp', 12)|safe }} WhatsApp (with country code) *</label>
+            <input class="fi" name="whatsapp" placeholder="e.g. 254712345678" required>
+          </div>
+          <div class="frow">
+            <div class="fg">
+              <label class="fl">{{ icon('instagram', 12)|safe }} Instagram Handle</label>
+              <input class="fi" name="instagram" placeholder="wanjiku_styles">
+            </div>
+            <div class="fg">
+              <label class="fl">{{ icon('tiktok', 12)|safe }} TikTok Handle</label>
+              <input class="fi" name="tiktok" placeholder="wanjiku_tiktok">
+            </div>
+          </div>
+          <div class="fg">
+            <label class="fl">{{ icon('map-pin', 12)|safe }} Location in Nairobi Town *</label>
+            <input class="fi" name="location" placeholder="e.g. Tom Mboya Street" required>
+          </div>
+          <div class="fg">
+            <label class="fl">{{ icon('eye', 12)|safe }} Product Image URL</label>
+            <input class="fi" type="url" name="image_url" placeholder="https://images.unsplash.com/...">
+          </div>
+          <button class="sbtn" type="submit">{{ icon('arrow-r', 16)|safe }} Submit Listing</button>
+        </form>
+      </div>
+    </div>
+
+  {% elif view == 'admin' %}
+    <div class="apg">
+      <div class="ahdr">
+        <div class="ahdr-ic">{{ admin_icon(admin_info["icon"])|safe }}</div>
+        <div>
+          <div class="ahdr-role">{{ admin_info["role"] }}</div>
+          <div class="ahdr-desc">{{ admin_info["desc"] }}</div>
+        </div>
+      </div>
+
+      <div class="stats">
+        {% for stat in stats_items %}
+          <div class="sc">
+            <div class="sn" style="color: {{ stat.color }}">{{ stat.val }}</div>
+            <div class="sl">{{ icon(stat.icon, 11)|safe }} {{ stat.label }}</div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="tabs">
+        <a href="/admin?tab=listings" class="tab {% if tab == 'listings' %}on{% endif %}">{{ icon('package', 14)|safe }} Listings</a>
+        <a href="/admin?tab=buyers"   class="tab {% if tab == 'buyers' %}on{% endif %}">{{ icon('users', 14)|safe }} Buyers</a>
+      </div>
+
+      {% if tab == 'listings' %}
+        <table class="tbl">
+          <tr><th></th><th>Item</th><th>Price</th><th>Seller</th><th>Location</th><th>Status</th><th>Actions</th></tr>
+          {% for p in admin_products %}
+            <tr>
+              <td>
+                <img class="thumb" src="{{ p.image_url or 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=100' }}" alt="">
+              </td>
+              <td>
+                <strong>{{ p.name }}</strong><br>
+                <span style="font-size:.7rem;color:var(--muted)">{{ p.category }}</span>
+              </td>
+              <td>Ksh {{ p.price }}</td>
+              <td>{{ p.seller }}</td>
+              <td>
+                <span style="display:flex;align-items:center;gap:.3rem">{{ icon('map-pin', 11)|safe }} {{ p.location }}</span>
+              </td>
+              <td>
+                {% if p.approved %}
+                  <span class="bdg bdg-live">{{ icon('check', 10)|safe }} Live</span>
+                {% else %}
+                  <span class="bdg bdg-pend">{{ icon('clock', 10)|safe }} Pending</span>
+                {% endif %}
+              </td>
+              <td>
+                {% if not p.approved %}
+                  <form method="POST" action="/admin/approve/{{ p.id }}" style="display:inline">
+                    <button class="ab ab-app">{{ icon('check', 12)|safe }} Approve</button>
+                  </form>
+                {% endif %}
+                <form method="POST" action="/admin/delete/{{ p.id }}" style="display:inline">
+                  <button class="ab ab-del">{{ icon('x', 12)|safe }}</button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </table>
+      {% else %}
+        <table class="tbl">
+          <tr><th></th><th>Username</th><th>Email</th><th>Joined</th></tr>
+          {% for b in admin_buyers %}
+            <tr>
+              <td><div class="av">{{ b.username[0]|upper }}</div></td>
+              <td><strong>{{ b.username }}</strong></td>
+              <td><span style="display:flex;align-items:center;gap:.3rem">{{ icon('mail', 11)|safe }} {{ b.email }}</span></td>
+              <td style="color:var(--muted);font-size:.78rem;display:flex;align-items:center;gap:.3rem">
+                {{ icon('clock', 11)|safe }} {{ b.created_at[:10] }}
+              </td>
+            </tr>
+          {% endfor %}
+        </table>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/filter.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "username": "kamau",
+        "email": "kamau@example.com",
+        "password": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
+        "created_at": "2025-01-01T12:00:00Z"
+    },
+    {
+        "id": 2,
+        "username": "testbuyer",
+        "email": "test@example.com",
+        "password": "ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f",
+        "created_at": "2025-01-01"
+    },
+    {
+        "id": 3,
+        "username": "Ninette",
+        "email": "ninette@gmail.com",
+        "password": "4cc8f4d609b717356701c57a03e737e5ac8fe885da8c7163d3de47e01849c635",
+        "created_at": "2025-01-01"
+    },
+    {
+        "id": 4,
+        "username": "wanjiru",
+        "email": "wanjiru@gmail.com",
+        "password": "cc2e018aa6eb9612ccd027bbdcdc9b8c8d351789f14cae4d688a876c18938235",
+        "created_at": "2025-01-01"
+    }
+]
