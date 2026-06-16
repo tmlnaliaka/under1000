@@ -9,46 +9,27 @@ from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, Asyn
 from app.main import create_app
 from app.database import Base
 
-_engine = None
-_Session = None
-_tmp_name = None
-
-
-def _get_or_create_db():
-    global _engine, _Session, _tmp_name
-    if _engine is None:
-        tmp = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
-        _tmp_name = tmp.name
-        tmp.close()
-        url = f"sqlite+aiosqlite:///{_tmp_name}"
-        _engine = create_async_engine(url, connect_args={"check_same_thread": False})
-        async def init():
-            async with _engine.begin() as conn:
-                await conn.run_sync(Base.metadata.create_all)
-            return _engine
-        import asyncio
-        asyncio.get_event_loop().run_until_complete(init())
-        _Session = async_sessionmaker(_engine, expire_on_commit=False, class_=AsyncSession)
-    return _engine, _Session
-
-
-@pytest_asyncio.fixture(scope="session")
-async def _db_setup():
-    global _engine, _Session, _tmp_name
-    _get_or_create_db()
-    yield
-    if _engine:
-        await _engine.dispose()
-    try:
-        os.remove(_tmp_name)
-    except OSError:
-        pass
-
 
 @pytest_asyncio.fixture
-async def db(_db_setup):
-    async with _Session() as session:
-        yield session
+async def db():
+    tmp = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
+    tmp_name = tmp.name
+    tmp.close()
+    url = f"sqlite+aiosqlite:///{tmp_name}"
+    engine = create_async_engine(url, connect_args={"check_same_thread": False})
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    Session = async_sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
+    session = Session()
+    yield session
+    await session.close()
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
+    await engine.dispose()
+    try:
+        os.remove(tmp_name)
+    except OSError:
+        pass
 
 
 @pytest_asyncio.fixture

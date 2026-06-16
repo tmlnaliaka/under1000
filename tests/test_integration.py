@@ -5,7 +5,7 @@ import pytest
 async def test_full_checkout_flow_decrements_inventory_and_clears_cart(auth_client, db):
     from app.models import Product
     
-    product_resp = await auth_client.post("/api/products", json={
+    product_resp = await auth_client.post("/api/products/", json={
         "name": "Jeans",
         "price": 500,
         "seller": "Jane",
@@ -20,13 +20,13 @@ async def test_full_checkout_flow_decrements_inventory_and_clears_cart(auth_clie
     product.approved = True
     await db.commit()
     
-    await auth_client.post("/api/cart", json={"product_id": product_id, "quantity": 2})
+    await auth_client.post("/api/cart/", json={"product_id": product_id, "quantity": 2})
 
     checkout = await auth_client.post("/api/cart/checkout", json={"payment_method": "mock"})
     assert checkout.status_code == 200
     assert "order_id" in checkout.json()
 
-    cart_after = await auth_client.get("/api/cart")
+    cart_after = await auth_client.get("/api/cart/")
     assert len(cart_after.json()) == 0
 
     product = await auth_client.get(f"/api/products/{product_id}")
@@ -53,7 +53,7 @@ async def test_admin_can_approve_product_after_creation(client, db):
     token = create_access_token({"sub": admin.username})
     client.headers["Authorization"] = f"Bearer {token}"
     
-    product_resp = await client.post("/api/products", json={
+    product_resp = await client.post("/api/products/", json={
         "name": "Shirt",
         "price": 250,
         "seller": "John",
