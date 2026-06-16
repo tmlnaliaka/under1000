@@ -7,5 +7,5 @@ COPY . .
 CMD ["uvicorn", "app.__main__:app", "--host", "0.0.0.0", "--port", "8000"]
 
 FROM base AS dev
-RUN pip install --no-cache-dir aiosqlite pytest pytest-asyncio httpx locust
+RUN pip install --no-cache-dir -r requirements-dev.txt
 CMD ["uvicorn", "app.__main__:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
