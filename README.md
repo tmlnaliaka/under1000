@@ -29,3 +29,11 @@ Nairobi town clothes & accessories marketplace — all under Ksh 1,000.
 - /sell          → Submit a listing (must be logged in)
 - /admin         → Admin dashboard
 - /admin/login   → Admin login
+
+## Product data
+
+The starter catalog is intentionally empty. Previous sample listings had no
+verifiable seller or product evidence, so they were removed rather than
+presented as real businesses. Add listings only after confirming the business
+and the specific item through a direct seller source. Do not copy catalog items
+from Jumia or Kilimall.
