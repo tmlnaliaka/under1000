@@ -33,7 +33,9 @@ Nairobi town clothes & accessories marketplace — all under Ksh 1,000.
 ## Product data
 
 Catalog entries must come from direct seller posts, not Jumia, Kilimall, or
-other marketplaces. Seeded video listings embed the seller's original post
-rather than copying expiring media URLs; the post date is shown so buyers can
-ask the seller to confirm current price and availability. Do not invent seller
-contacts or fill the catalog with products that lack a direct source.
+other marketplaces. Listings link to their first-party seller posts or product
+pages and use seller-provided media. Post dates or the date the seller's stock
+was checked are shown so buyers can confirm current price and availability.
+Video listings embed the seller's original post rather than copying expiring
+media URLs. Do not invent seller contacts or fill the catalog with products
+that lack a direct source.

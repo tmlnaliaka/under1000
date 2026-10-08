@@ -44,6 +44,8 @@
                 <div class="cmeta">{{ icon('store', 11)|safe }} {{ p.seller }}</div>
                 {% if p.source_date %}
                   <div class="source-note">Seller post: {{ p.source_date }}. Confirm price and availability with the seller.</div>
+                {% elif p.source_checked_on %}
+                  <div class="source-note">Seller site checked {{ p.source_checked_on }}{% if p.available_at_source %}; listed in stock then{% endif %}. Confirm price and availability with the seller.</div>
                 {% endif %}
                 <div class="cacts">
                   {% if p.whatsapp %}
@@ -57,7 +59,7 @@
                   {% endif %}
                   {% if p.source_url %}
                     <a class="bsm" href="{{ p.source_url }}" target="_blank" rel="noopener noreferrer">
-                      {% if p.media_type == 'video' %}Watch seller video{% else %}View seller post{% endif %}
+                      {% if p.media_type == 'video' %}Watch seller video{% elif p.source_date %}View seller post{% else %}View seller listing{% endif %}
                     </a>
                   {% endif %}
                 </div>
