@@ -32,8 +32,8 @@ Nairobi town clothes & accessories marketplace — all under Ksh 1,000.
 
 ## Product data
 
-The starter catalog is intentionally empty. Previous sample listings had no
-verifiable seller or product evidence, so they were removed rather than
-presented as real businesses. Add listings only after confirming the business
-and the specific item through a direct seller source. Do not copy catalog items
-from Jumia or Kilimall.
+Catalog entries must come from direct seller posts, not Jumia, Kilimall, or
+other marketplaces. Seeded video listings embed the seller's original post
+rather than copying expiring media URLs; the post date is shown so buyers can
+ask the seller to confirm current price and availability. Do not invent seller
+contacts or fill the catalog with products that lack a direct source.

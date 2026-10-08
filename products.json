@@ -1,1 +1,66 @@
-[]
+[
+    {
+        "id": 1,
+        "name": "Chino Pants",
+        "price": 500,
+        "seller": "Stanley Fashions",
+        "whatsapp": "254725425048",
+        "instagram": "stanley_fashions",
+        "tiktok": "",
+        "location": "Pangani Heights, Nairobi",
+        "category": "Pants",
+        "approved": 1,
+        "submitted_by": "verified-seller-source",
+        "source_url": "https://www.instagram.com/stanley_fashions/reel/DbwKacsO_Sz/",
+        "source_date": "2026-08-07",
+        "media_type": "video"
+    },
+    {
+        "id": 2,
+        "name": "Chiffon Tops",
+        "price": 500,
+        "seller": "Stanley Fashions",
+        "whatsapp": "254725425048",
+        "instagram": "stanley_fashions",
+        "tiktok": "",
+        "location": "Pangani Heights, Nairobi",
+        "category": "Tops",
+        "approved": 1,
+        "submitted_by": "verified-seller-source",
+        "source_url": "https://www.instagram.com/stanley_fashions/reel/DbSq5WAurvQ/",
+        "source_date": "2026-07-27",
+        "media_type": "video"
+    },
+    {
+        "id": 3,
+        "name": "Official Dresses",
+        "price": 800,
+        "seller": "Stanley Fashions",
+        "whatsapp": "254725425048",
+        "instagram": "stanley_fashions",
+        "tiktok": "",
+        "location": "Pangani Heights, Nairobi",
+        "category": "Dresses",
+        "approved": 1,
+        "submitted_by": "verified-seller-source",
+        "source_url": "https://www.instagram.com/stanley_fashions/reel/DcI5AePurvc/",
+        "source_date": "2026-08-17",
+        "media_type": "video"
+    },
+    {
+        "id": 4,
+        "name": "Quality Dresses",
+        "price": 500,
+        "seller": "Crystal Pretty Official",
+        "whatsapp": "",
+        "instagram": "crystal_pretty_official",
+        "tiktok": "",
+        "location": "Contrast House, 6th Floor, Nairobi CBD",
+        "category": "Dresses",
+        "approved": 1,
+        "submitted_by": "verified-seller-source",
+        "source_url": "https://www.instagram.com/crystal_pretty_official/reel/DcMTFfRMhLq/",
+        "source_date": "2026-08-18",
+        "media_type": "video"
+    }
+]

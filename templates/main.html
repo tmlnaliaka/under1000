@@ -28,7 +28,13 @@
           {% for p in products %}
             <div class="card" data-price="{{ p.price }}">
               <div class="cimg">
-                <img src="{{ p.image_url or 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600' }}" alt="{{ p.name }}" loading="lazy">
+                {% if p.source_url and p.media_type == 'video' %}
+                  <iframe src="{{ p.source_url.rstrip('/') }}/embed/" title="{{ p.name }} video from {{ p.seller }}" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                {% elif p.image_url %}
+                  <img src="{{ p.image_url }}" alt="{{ p.name }}" loading="lazy">
+                {% else %}
+                  <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600" alt="{{ p.name }}" loading="lazy">
+                {% endif %}
                 <div class="ptag">{{ icon('tag', 12)|safe }} Ksh {{ p.price }}</div>
                 <div class="ctag">{{ p.category }}</div>
               </div>
@@ -36,13 +42,23 @@
                 <div class="cname">{{ p.name }}</div>
                 <div class="cmeta">{{ icon('map-pin', 11)|safe }} {{ p.location }}</div>
                 <div class="cmeta">{{ icon('store', 11)|safe }} {{ p.seller }}</div>
+                {% if p.source_date %}
+                  <div class="source-note">Seller post: {{ p.source_date }}. Confirm price and availability with the seller.</div>
+                {% endif %}
                 <div class="cacts">
-                  <a class="bwa" href="https://wa.me/{{ p.whatsapp }}?text=Hi!+I+saw+{{ p.name }}+on+Under1000+for+Ksh+{{ p.price }}+–+is+it+available?" target="_blank">{{ icon('whatsapp', 15)|safe }} WhatsApp</a>
+                  {% if p.whatsapp %}
+                    <a class="bwa" href="https://wa.me/{{ p.whatsapp }}?text=Hi!+I+saw+{{ p.name }}+on+Under1000+for+Ksh+{{ p.price }}+is+it+available?" target="_blank" rel="noopener noreferrer">{{ icon('whatsapp', 15)|safe }} WhatsApp</a>
+                  {% endif %}
                   {% if p.instagram %}
-                    <a class="bsm" href="https://instagram.com/{{ p.instagram }}" target="_blank">{{ icon('instagram', 14)|safe }}</a>
+                    <a class="bsm" href="https://instagram.com/{{ p.instagram }}" target="_blank" rel="noopener noreferrer">{{ icon('instagram', 14)|safe }}</a>
                   {% endif %}
                   {% if p.tiktok %}
-                    <a class="bsm" href="https://tiktok.com/@{{ p.tiktok }}" target="_blank">{{ icon('tiktok', 14)|safe }}</a>
+                    <a class="bsm" href="https://tiktok.com/@{{ p.tiktok }}" target="_blank" rel="noopener noreferrer">{{ icon('tiktok', 14)|safe }}</a>
+                  {% endif %}
+                  {% if p.source_url %}
+                    <a class="bsm" href="{{ p.source_url }}" target="_blank" rel="noopener noreferrer">
+                      {% if p.media_type == 'video' %}Watch seller video{% else %}View seller post{% endif %}
+                    </a>
                   {% endif %}
                 </div>
               </div>
@@ -220,7 +236,11 @@
           {% for p in admin_products %}
             <tr>
               <td>
-                <img class="thumb" src="{{ p.image_url or 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=100' }}" alt="">
+                {% if p.source_url and p.media_type == 'video' %}
+                  <a class="source-thumb" href="{{ p.source_url }}" target="_blank" rel="noopener noreferrer" aria-label="Open seller video for {{ p.name }}">Video</a>
+                {% else %}
+                  <img class="thumb" src="{{ p.image_url or 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=100' }}" alt="">
+                {% endif %}
               </td>
               <td>
                 <strong>{{ p.name }}</strong><br>
